@@ -84,7 +84,7 @@ ln -sf ../backup/file1.txt "${PROJECT_DIR}/scripts/file1_link.txt"
 # Manually verify that (use ls) the symbolic link has been created and points to the correct target.
 echo "Verifying the symbolic link of file1.txt..."
 # TODO: use ls or readlink to confirm the symlink target
-readlink -f "${PROJECT_DIR}/scripts/file1_link.txt"
+ls -l "${PROJECT_DIR}/scripts/file1_link.txt"
 
 # 6. System Monitoring and Process Management
 # Display the disk usage of the entire filesystem.
@@ -103,7 +103,9 @@ ps aux | grep -i "[b]ash"
 echo "Creating a compressed archive of the 'backup' directory..."
 # TODO: create a dated archive of "${PROJECT_DIR}/backup" inside "${PROJECT_DIR}/backup"
 ARCHIVE_NAME="backup_$(date +%Y%m%d).tar.gz"
-tar --exclude="${ARCHIVE_NAME}" -czf "${PROJECT_DIR}/backup/${ARCHIVE_NAME}" -C "${PROJECT_DIR}" backup
+TMP_ARCHIVE="$(mktemp)"
+tar -czf "${TMP_ARCHIVE}" -C "${PROJECT_DIR}" backup
+mv "${TMP_ARCHIVE}" "${PROJECT_DIR}/backup/${ARCHIVE_NAME}"
 
 # 8. Log Completion
 # Create a log message indicating the completion of the assignment tasks and store it in a 'README.md' file inside the 'project' directory.
